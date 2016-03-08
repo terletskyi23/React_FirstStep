@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact List!</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
+</head>
+<body>
+    <div id='content'></div>
+    <script type="text/babel">
+      var data = [
+        {
+          id: 0,
+          name: "Nick Wilde",
+          type: "fox",
+          img_url: "http://orig03.deviantart.net/546f/f/2015/340/e/d/nick_wilde_vector_by_simmeh-d9j91c4.png"
+        },
+        {
+          id: 1,
+          name: "Judy Hopps",
+          type: "bunny",
+          img_url: "http://vignette4.wikia.nocookie.net/zootopia/images/6/68/Judy_Hopps_Zootopia.png/revision/latest?cb=20160112060743"
+        },
+        {
+          id: 2,
+          name: "Mrs. Otterton",
+          type: " otter",
+          img_url: "http://statici.behindthevoiceactors.com/behindthevoiceactors/_img/chars/char_154494.jpg"
+        },
+        {
+          id: 3,
+          name: "Flash",
+          type: "sloth",
+          img_url: "http://vignette2.wikia.nocookie.net/disney/images/3/3e/Flash_Zootopia.png/revision/latest?cb=20151224194629"
+        }
+      ];
+
+      var Contact = React.createClass({
+        render: function(){
+          return <li>
+                    <img src={this.props.img_url} alt={this.props.name} width="60px" height="60px" />
+                    <div>{this.props.name}</div>
+                    <div>{this.props.type}</div>
+                 </li>;
+        }
+      });
+
+      var ContactList = React.createClass({
+        getInitialState: function(){
+          return {
+            displayedContacts: data
+          };
+        },
+        handlerSearch: function(e){
+          var searchedQuery = e.target.value.toLowerCase();
+          var displayedContacts = data.filter(function(el){
+              var contactName = el.name.toLowerCase();
+              return contactName.indexOf(searchedQuery) !== -1;
+          });
+
+          this.setState({
+            displayedContacts: displayedContacts
+          });
+        },
+        render: function(){
+          return (
+            <div>
+              <input type="text" onChange={this.handlerSearch}/>
+              <ul>
+                {
+                  this.state.displayedContacts.map(function(el){
+                    return <Contact key={el.id}
+                                    name={el.name}
+                                    type={el.type}
+                                    img_url = {el.img_url} />
+                  })
+                }
+              </ul>
+            </div>
+          );
+        }
+      });
+
+      ReactDOM.render(
+        <ContactList/>,
+        document.getElementById("content")
+      );
+    </script>
+</body>
